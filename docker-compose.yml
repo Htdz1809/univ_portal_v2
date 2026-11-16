@@ -5,6 +5,8 @@ services:
     image: postgres:16-alpine
     container_name: univ-db-v2
     restart: unless-stopped
+    ports:
+      - "${DB_PORT:-5433}:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-university}
       POSTGRES_USER: ${POSTGRES_USER:-university}
@@ -23,8 +25,6 @@ services:
       timeout: 5s
       retries: 6
       start_period: 10s
-    # Intentionally no "ports": PostgreSQL is reachable only on the internal
-    # container network, never from the host or the internet.
 
   app:
     build:
