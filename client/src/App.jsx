@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FlashNotification from './components/FlashNotification';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Departments from './pages/Departments';
 import News from './pages/News';
@@ -15,6 +16,7 @@ import NotFound from './pages/NotFound';
 export default function App() {
   return (
     <>
+      <ScrollToTop />
       <Header />
       <FlashNotification />
       <Routes>

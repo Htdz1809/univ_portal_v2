@@ -7,7 +7,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAboutInView, setIsAboutInView] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,31 +18,38 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Track if About section is in view on the home page
+  // Update active section on home page based on scroll and hash
   useEffect(() => {
     if (location.pathname !== '/') {
-      setIsAboutInView(false);
+      setActiveSection('none');
       return;
     }
 
     if (location.hash === '#about') {
-      setIsAboutInView(true);
+      setActiveSection('about');
+    } else {
+      setActiveSection('home');
     }
 
-    const aboutEl = document.getElementById('about');
-    if (!aboutEl || !('IntersectionObserver' in window)) return;
+    const handleScrollCheck = () => {
+      const aboutEl = document.getElementById('about');
+      if (!aboutEl) return;
+      const rect = aboutEl.getBoundingClientRect();
+      if (rect.top <= 250 && rect.bottom >= 150) {
+        setActiveSection('about');
+      } else if (rect.top > 250) {
+        setActiveSection('home');
+      }
+    };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsAboutInView(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.3 }
-    );
+    window.addEventListener('scroll', handleScrollCheck, { passive: true });
+    // Initial check
+    const timer = setTimeout(handleScrollCheck, 100);
 
-    observer.observe(aboutEl);
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScrollCheck);
+    };
   }, [location.pathname, location.hash]);
 
   const handleSignOut = async (e) => {
@@ -52,23 +59,25 @@ export default function Header() {
   };
 
   const handleHomeClick = (e) => {
+    e.preventDefault();
+    setActiveSection('home');
     if (location.pathname === '/') {
-      e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.history.pushState(null, '', '/');
-      setIsAboutInView(false);
+      navigate('/', { replace: true });
+    } else {
+      navigate('/');
     }
   };
 
   const handleAboutClick = (e) => {
     e.preventDefault();
+    setActiveSection('about');
     if (location.pathname === '/') {
       const el = document.getElementById('about');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       }
-      window.history.pushState(null, '', '/#about');
-      setIsAboutInView(true);
+      navigate('/#about', { replace: true });
     } else {
       navigate('/#about');
     }
@@ -77,8 +86,9 @@ export default function Header() {
   const isAcademics = location.pathname.startsWith('/departments');
   const isNews = location.pathname.startsWith('/news');
   const isAdmin = location.pathname.startsWith('/admin');
-  const isAboutActive = location.pathname === '/' && (location.hash === '#about' || isAboutInView);
-  const isHomeActive = location.pathname === '/' && !isAboutActive;
+
+  const isHomeActive = location.pathname === '/' && activeSection === 'home';
+  const isAboutActive = location.pathname === '/' && activeSection === 'about';
 
   return (
     <>
