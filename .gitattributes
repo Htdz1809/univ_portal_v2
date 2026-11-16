@@ -1,0 +1,21 @@
+# Line endings
+* text=auto eol=lf
+
+# GitHub Linguist Language Configuration
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+*.mjs linguist-language=JavaScript
+*.css linguist-language=CSS
+*.sql linguist-language=SQL
+
+# Exclude documentation, reports, and generated/media files from language statistics
+GUIDE_DOCKER_FR.html linguist-documentation=true
+GUIDE_DOCKER_FR.md linguist-documentation=true
+GUIDE_EXPLICATION_CODE_FR.md linguist-documentation=true
+RAPPORT_TECHNIQUE_FR.md linguist-documentation=true
+TECHNICAL_REPORT_EN.md linguist-documentation=true
+*.pdf linguist-documentation=true
+docs/** linguist-documentation=true
+public/uploads/** linguist-vendored=true
+public/images/** linguist-vendored=true
+public/videos/** linguist-vendored=true
