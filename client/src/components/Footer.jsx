@@ -40,7 +40,7 @@ export default function Footer() {
       </div>
 
       <div className="container footer-bottom">
-        <p>&copy; {currentYear} M'Hamed Bougara University of Boumerdes</p>
+        <p>© {currentYear} M'Hamed Bougara University of Boumerdes</p>
         <p>Academic demonstration portal; not an official university website.</p>
       </div>
     </footer>

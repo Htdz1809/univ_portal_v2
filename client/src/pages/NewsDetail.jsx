@@ -67,7 +67,7 @@ export default function NewsDetail() {
         <section className="page-hero article-hero">
           <div className="container">
             <Link className="back-link" to="/news">
-              <span aria-hidden="true">&larr;</span> All announcements
+              <span aria-hidden="true">←</span> All announcements
             </Link>
             <div className="card-meta">
               <span className={`badge badge-${categoryClass(announcement.category)}`}>

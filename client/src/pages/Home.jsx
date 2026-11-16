@@ -177,9 +177,9 @@ export default function Home() {
           <article className="promo-card theme-white">
             <p className="promo-eyebrow">Quick access</p>
             <nav className="promo-links" aria-label="Quick links">
-              <Link to="/departments">Faculties &amp; institutes <span aria-hidden="true">&nearr;</span></Link>
-              <Link to="/news">News &amp; announcements <span aria-hidden="true">&nearr;</span></Link>
-              <a href="/#about">About the university <span aria-hidden="true">&nearr;</span></a>
+              <Link to="/departments">Faculties &amp; institutes <span aria-hidden="true">↗</span></Link>
+              <Link to="/news">News &amp; announcements <span aria-hidden="true">↗</span></Link>
+              <a href="/#about">About the university <span aria-hidden="true">↗</span></a>
             </nav>
             <div className="promo-footer">
               <p className="promo-desc">
@@ -244,7 +244,7 @@ export default function Home() {
             </div>
             <div className="promo-footer">
               <a className="pill-link" href="https://maps.google.com/?q=Universite+M'Hamed+Bougara+Boumerdes" target="_blank" rel="noopener noreferrer">
-                View on Map &nearr;
+                View on Map ↗
               </a>
             </div>
           </article>
@@ -277,7 +277,7 @@ export default function Home() {
                 Notices, events and stories published by the university. Visit the
                 newsroom for the full archive.
               </p>
-              <Link className="text-link" to="/news">All announcements <span aria-hidden="true">&nearr;</span></Link>
+              <Link className="text-link" to="/news">All announcements <span aria-hidden="true">↗</span></Link>
             </div>
           </div>
 
@@ -306,7 +306,7 @@ export default function Home() {
                   <h3><Link to={`/news/${announcement.id}`}>{announcement.title}</Link></h3>
                   <p>{announcement.summary}</p>
                   <Link className="story-link" to={`/news/${announcement.id}`}>
-                    Read story <span aria-hidden="true">&nearr;</span>
+                    Read story <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ))}
@@ -329,7 +329,7 @@ export default function Home() {
               economics and management, law and political science, languages,
               electrical engineering and applied sciences.
             </p>
-            <Link className="text-link" to="/departments">Discover our academic units <span aria-hidden="true">&nearr;</span></Link>
+            <Link className="text-link" to="/departments">Discover our academic units <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
 

@@ -119,9 +119,9 @@ export default function News() {
               Filter
             </button>
             {hasFilter && (
-              <a className="text-link" href="#clear" onClick={handleClearFilters}>
+              <Link className="text-link" to="/news" onClick={handleClearFilters}>
                 Clear filters
-              </a>
+              </Link>
             )}
           </form>
 
@@ -130,9 +130,9 @@ export default function News() {
               <h2>No matching announcements</h2>
               <p>
                 Try a different category or search term, or{' '}
-                <a href="#view-all" onClick={handleClearFilters}>
+                <Link to="/news" onClick={handleClearFilters}>
                   view all announcements
-                </a>
+                </Link>
                 .
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function News() {
                       to={`/news/${announcement.id}`}
                       aria-label={`Read ${announcement.title}`}
                     >
-                      Read <span aria-hidden="true">&nearr;</span>
+                      Read <span aria-hidden="true">↗</span>
                     </Link>
                   </article>
                 ))}

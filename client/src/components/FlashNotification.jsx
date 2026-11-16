@@ -45,7 +45,7 @@ export default function FlashNotification() {
           aria-label="Dismiss notification"
           onClick={clearFlash}
         >
-          &times;
+          ×
         </button>
       </div>
     </div>
