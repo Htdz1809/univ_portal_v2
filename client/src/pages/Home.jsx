@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { formatDate, categoryClass } from '../utils/format';
 
 export default function Home() {
+  const location = useLocation();
   const [data, setData] = useState({
     recentAnnouncements: [],
     stats: { departments: 8, announcements: 0 },
@@ -10,6 +11,18 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
   const promoSectionRef = useRef(null);
+
+  useEffect(() => {
+    if (location.hash === '#about') {
+      const timer = setTimeout(() => {
+        const el = document.getElementById('about');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [location.hash, loading]);
 
   useEffect(() => {
     document.title = "Home · M'Hamed Bougara University of Boumerdes";
