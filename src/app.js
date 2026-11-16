@@ -12,6 +12,7 @@ const config = require('./config');
 const defaultDb = require('./db');
 const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
+const apiRoutes = require('./routes/api');
 const { notFound, errorHandler } = require('./middleware/errors');
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -62,9 +63,11 @@ function createApp(options = {}) {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          styleSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:'],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
+          mediaSrc: ["'self'", 'blob:'],
+          connectSrc: ["'self'", 'ws:', 'http://localhost:*'],
           formAction: ["'self'"],
           upgradeInsecureRequests: null,
         },
@@ -81,6 +84,7 @@ function createApp(options = {}) {
     }
   });
 
+  app.use(express.json({ limit: '2mb' }));
   app.use(express.urlencoded({ extended: false, limit: '100kb' }));
   app.use(
     express.static(path.join(config.rootDir, 'public'), {
@@ -129,6 +133,30 @@ function createApp(options = {}) {
         .replace(/[^a-z]+/g, '-');
     next();
   });
+
+  app.use('/api', apiRoutes(database));
+
+  const clientDist = path.join(config.rootDir, 'client', 'dist');
+  const serveSpa =
+    options.serveSpa !== undefined
+      ? options.serveSpa
+      : config.nodeEnv !== 'test' && fs.existsSync(clientDist);
+
+  if (serveSpa) {
+    app.use(express.static(clientDist));
+    app.use((req, res, next) => {
+      if (req.method !== 'GET') return next();
+      if (
+        req.path.startsWith('/api') ||
+        req.path.startsWith('/uploads') ||
+        req.path.startsWith('/images') ||
+        req.path.startsWith('/videos')
+      ) {
+        return next();
+      }
+      res.sendFile(path.join(clientDist, 'index.html'));
+    });
+  }
 
   app.use('/', publicRoutes(database));
   app.use('/admin', adminRoutes(database));

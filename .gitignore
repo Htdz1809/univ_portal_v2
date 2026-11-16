@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Build artifacts
+dist/
+client/dist/
+
 # Local environment and secrets
 .env
 .env.*

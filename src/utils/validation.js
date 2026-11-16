@@ -14,6 +14,8 @@ function validateAnnouncement(body = {}) {
     category: clean(body.category),
     imageUrl: clean(body.image_url || body.imageUrl),
     isPublished:
+      body.is_published === true ||
+      body.isPublished === true ||
       body.is_published === 'on' ||
       body.is_published === 'true' ||
       body.is_published === '1',
