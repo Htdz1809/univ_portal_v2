@@ -5,7 +5,9 @@ require('dotenv').config({ quiet: true });
 const args = process.argv.slice(2);
 const baseUrlArgument = args.find((argument) => !argument.startsWith('--'));
 const baseUrl =
-  baseUrlArgument || process.env.BASE_URL || 'http://localhost:3000';
+  baseUrlArgument ||
+  process.env.BASE_URL ||
+  `http://localhost:${process.env.PORT || 3001}`;
 const username = process.env.ADMIN_USERNAME || 'admin';
 const password = process.env.ADMIN_PASSWORD || '';
 const shouldDelete = args.includes('--delete');

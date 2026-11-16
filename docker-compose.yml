@@ -1,16 +1,16 @@
-name: umbb-portal
+name: univ-portal-v2
 
 services:
   db:
     image: postgres:16-alpine
-    container_name: umbb-db
+    container_name: univ-db-v2
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-university}
       POSTGRES_USER: ${POSTGRES_USER:-university}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata-v2:/var/lib/postgresql/data
     networks:
       - backend
     healthcheck:
@@ -30,11 +30,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: umbb-app
+    container_name: univ-app-v2
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: 3001
       DATABASE_URL: postgres://${POSTGRES_USER:-university}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-university}
       DATABASE_SSL: "false"
       SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
@@ -43,7 +43,7 @@ services:
       COOKIE_SECURE: ${COOKIE_SECURE:-auto}
       TRUST_PROXY: "0"
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "${APP_PORT:-3001}:3001"
     depends_on:
       db:
         condition: service_healthy
@@ -55,7 +55,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3000/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+          "fetch('http://127.0.0.1:3001/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
         ]
       interval: 30s
       timeout: 5s
@@ -63,10 +63,10 @@ services:
       start_period: 20s
 
 volumes:
-  pgdata:
-    name: umbb_pgdata
+  pgdata-v2:
+    name: univ_portal_v2_pgdata
 
 networks:
   backend:
-    name: umbb_backend
+    name: univ_portal_v2_backend
     driver: bridge

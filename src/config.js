@@ -33,7 +33,7 @@ module.exports = {
   rootDir,
   nodeEnv: env.NODE_ENV || 'development',
   isProduction,
-  port: Number(env.PORT || 3000),
+  port: Number(env.PORT || 3001),
   databaseUrl:
     env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/university',
   databaseSsl: String(env.DATABASE_SSL || '').toLowerCase() === 'true',
