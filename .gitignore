@@ -31,3 +31,7 @@ Thumbs.db
 # Local IDE metadata
 .sii/
 
+# User uploaded content
+public/uploads/*
+!public/uploads/.gitkeep
+
