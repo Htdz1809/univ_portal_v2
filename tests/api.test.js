@@ -223,12 +223,30 @@ test('API: /api/auth/login rejects invalid credentials and accepts valid ones', 
   assert.equal(postLogoutMe.body.authenticated, false);
 });
 
-test('SPA: serves Vite built index.html when serveSpa is true', async () => {
+test('API: /healthz reports database availability', async () => {
+  const { app } = buildTestApp();
+  const res = await request(app).get('/healthz').expect(200);
+  assert.equal(res.body.status, 'ok');
+  assert.equal(res.body.database, 'up');
+});
+
+test('API: unknown API route returns 404', async () => {
+  const { app } = buildTestApp();
+  await request(app).get('/api/unknown-endpoint').expect(404);
+});
+
+test('SPA: serves Vite built index.html for root and client routes', async () => {
   const store = new session.MemoryStore();
   const db = createFakeDb();
-  const app = createApp({ db, sessionStore: store, serveSpa: true });
+  const app = createApp({ db, sessionStore: store });
 
-  const res = await request(app).get('/').expect(200);
-  assert.match(res.text, /<div id="root"><\/div>/);
-  assert.match(res.text, /Boumerdes/);
+  const homeRes = await request(app).get('/').expect(200);
+  assert.match(homeRes.text, /<div id="root"><\/div>/);
+  assert.match(homeRes.text, /Boumerdes/);
+
+  const deptRes = await request(app).get('/departments').expect(200);
+  assert.match(deptRes.text, /<div id="root"><\/div>/);
+
+  const newsRes = await request(app).get('/news').expect(200);
+  assert.match(newsRes.text, /<div id="root"><\/div>/);
 });

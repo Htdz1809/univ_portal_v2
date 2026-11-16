@@ -21,7 +21,6 @@ COPY --chown=node:node --from=builder /app/client/dist ./client/dist
 COPY --chown=node:node package.json server.js ./
 COPY --chown=node:node src ./src
 COPY --chown=node:node db ./db
-COPY --chown=node:node views ./views
 COPY --chown=node:node public ./public
 
 USER node
