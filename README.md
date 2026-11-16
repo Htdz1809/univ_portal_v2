@@ -14,11 +14,6 @@ University of Boumerdès (UMBB). Seeded announcements are sample content for the
 administration demonstration, and this is not an official university website.
 The project was created for an academic cloud-computing assignment.
 
-Institutional information was taken from UMBB's public website:
-
-- <https://www.univ-boumerdes.dz/universit%C3%A9/presentation.html>
-- <https://www.univ-boumerdes.dz/universit%C3%A9/facultes-institut.html>
-- <https://www.univ-boumerdes.dz/universit%C3%A9/annuaire.html>
 
 ## Features
 
@@ -36,33 +31,6 @@ Institutional information was taken from UMBB's public website:
   on first start.
 - Persistent PostgreSQL storage in both environments.
 
-## Architecture
-
-```
-Browser (host machine)
-        |
-        | HTTP :3000
-        v
-+------------------------------------------------+
-| Ubuntu VM (VirtualBox bridged network)         |
-|                                                |
-|  +----------------+       +-----------------+  |
-|  | app container  | ----> | db container    |  |
-|  | Node/Express   |       | PostgreSQL 16   |  |
-|  | port 3000      |       | port 5432       |  |
-|  +-------+--------+       +--------+--------+  |
-|          |                         |           |
-|   published port             named volume      |
-+----------|-------------------------|-----------+
-           |                         |
-      host browser             umbb_pgdata
-```
-
-The database container does not publish port 5432. Only the application
-container can reach it over the internal `umbb_backend` Docker network.
-
-On Render, the same Docker image runs as a web service and connects to a
-managed PostgreSQL instance through a private/internal connection string.
 
 ## Project structure
 
@@ -258,10 +226,4 @@ admin CRUD operations against a running deployment.
 - The database has no published host port in Docker and uses a private network.
 - `.env` is gitignored. Never commit real secrets.
 
-## Deployment guides
 
-- [VM setup, networking and Docker deployment](docs/VM_SETUP.md)
-- [Render deployment](docs/RENDER_DEPLOY.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-- [Technical report](docs/REPORT.md)
-- [Video demonstration script](docs/VIDEO_SCRIPT.md)
